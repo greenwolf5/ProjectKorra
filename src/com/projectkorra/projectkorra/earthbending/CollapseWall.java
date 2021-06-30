@@ -68,6 +68,44 @@ public class CollapseWall extends EarthAbility {
 		}
 	}
 
+	public CollapseWall(final Player player, final boolean forCombo) {//Made only for collapse, probably some optimization that *could* be done, but isn't needed
+		super(player);
+		if (!this.bPlayer.canBendIgnoreBinds(this) || this.bPlayer.isOnCooldown("CollapseWall")) {
+			return;
+		}
+
+		this.selectRange = getConfig().getInt("Abilities.Earth.Collapse.SelectRange");
+		this.height = getConfig().getInt("Abilities.Earth.Collapse.Wall.Height");
+		this.radius = getConfig().getDouble("Abilities.Earth.Collapse.Radius");
+		this.cooldown = getConfig().getLong("Abilities.Earth.Collapse.Wall.Cooldown");
+		this.blocks = new ConcurrentHashMap<>();
+		this.baseBlocks = new ConcurrentHashMap<>();
+
+		if (this.bPlayer.isAvatarState()) {
+			this.height = getConfig().getInt("Abilities.Avatar.AvatarState.Earth.Collapse.Wall.Height");
+		}
+
+		final Block sblock = BlockSource.getEarthSourceBlock(player, this.selectRange, ClickType.RIGHT_CLICK_BLOCK);
+		if (sblock == null) {
+			this.location = this.getTargetEarthBlock(this.selectRange).getLocation();
+		} else {
+			this.location = sblock.getLocation();
+		}
+
+		for (final Block block : GeneralMethods.getBlocksAroundPoint(this.location, this.radius)) {
+			if (this.isEarthbendable(block) && !this.blocks.containsKey(block) && block.getY() >= this.location.getBlockY()) {
+				this.getAffectedBlocks(block);
+			}
+		}
+
+		if (!this.baseBlocks.isEmpty()) {
+			this.bPlayer.addCooldown("CollapseWall", this.cooldown);
+		}
+		for (final Block block : this.baseBlocks.keySet()) {
+			new Collapse(player, block.getLocation());
+		}
+	}
+
 	private void getAffectedBlocks(final Block block) {
 		int tall = 0;
 		Block baseBlock = block;

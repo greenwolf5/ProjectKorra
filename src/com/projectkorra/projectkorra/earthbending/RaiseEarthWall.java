@@ -23,6 +23,8 @@ public class RaiseEarthWall extends EarthAbility {
 	@Attribute(Attribute.COOLDOWN)
 	private long cooldown;
 	private Location location;
+	private Vector playerDirection;
+	private Vector moveSourceThisDirection;
 
 	public RaiseEarthWall(final Player player) {
 		super(player);
@@ -39,7 +41,7 @@ public class RaiseEarthWall extends EarthAbility {
 			this.height = getConfig().getInt("Abilities.Avatar.AvatarState.Earth.RaiseEarth.Wall.Height");
 			this.width = getConfig().getInt("Abilities.Avatar.AvatarState.Earth.RaiseEarth.Wall.Width");
 		}
-
+		playerDirection = player.getEyeLocation().getDirection();
 		this.start();
 	}
 
@@ -96,6 +98,7 @@ public class RaiseEarthWall extends EarthAbility {
 		final World world = this.location.getWorld();
 		boolean shouldAddCooldown = false;
 
+		for(int p = 0; p < 2; p++){
 		for (int i = 0; i < this.width; i++) {
 			final double adjustedI = i - this.width / 2.0;
 			Block block = world.getBlockAt(this.location.clone().add(orth.clone().multiply(adjustedI)));
@@ -125,6 +128,22 @@ public class RaiseEarthWall extends EarthAbility {
 				new RaiseEarth(this.player, block.getLocation(), this.height);
 			}
 		}
+
+		//Likely a very janky way of doing this, but it works very well for what I wanted so I cannot complain!
+		moveSourceThisDirection = new Vector(playerDirection.getX(),0,playerDirection.getZ());
+		moveSourceThisDirection = getDegreeRoundedVector(moveSourceThisDirection, 0.25);
+		
+		if(moveSourceThisDirection.getX() > moveSourceThisDirection.getZ()){ 
+			if((!(moveSourceThisDirection.getX() == 1) && !(moveSourceThisDirection.getZ() == -1)))
+				moveSourceThisDirection.setZ(0);
+		}
+		else{ 
+			if((!(moveSourceThisDirection.getX() == -1) && !(moveSourceThisDirection.getZ() == 1)))
+				moveSourceThisDirection.setX(0);
+		}
+
+		location = (sblock.getLocation().add(moveSourceThisDirection));
+	}
 
 		if (shouldAddCooldown) {
 			this.bPlayer.addCooldown("RaiseEarthWall", this.cooldown);
