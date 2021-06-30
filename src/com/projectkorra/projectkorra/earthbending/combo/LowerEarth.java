@@ -16,7 +16,6 @@ public class LowerEarth extends EarthAbility implements ComboAbility {
     public LowerEarth(Player player) {
         super(player);
         if (!this.bPlayer.canBendIgnoreBinds(this)) {
-            System.out.println("fail safe");
 			return;
 		}
         CollapseWall collapseWall = new CollapseWall(player, true);

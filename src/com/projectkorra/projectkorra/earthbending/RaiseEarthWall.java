@@ -98,6 +98,9 @@ public class RaiseEarthWall extends EarthAbility {
 		final World world = this.location.getWorld();
 		boolean shouldAddCooldown = false;
 
+		if(sblock != null){ //If you go out of range, sometimes it'll sort of work but error- so this helps prevent that
+							//This also causes an issue when using at far range? Don't quiet understand, but if using above sourcerange, then tapping shift, sometimes it'll
+							//detect a block that's off the x or z axis oh well. we'll see if it's a big issue.
 		for(int p = 0; p < 2; p++){
 		for (int i = 0; i < this.width; i++) {
 			final double adjustedI = i - this.width / 2.0;
@@ -129,21 +132,19 @@ public class RaiseEarthWall extends EarthAbility {
 			}
 		}
 
-		//Likely a very janky way of doing this, but it works very well for what I wanted so I cannot complain!
 		moveSourceThisDirection = new Vector(playerDirection.getX(),0,playerDirection.getZ());
 		moveSourceThisDirection = getDegreeRoundedVector(moveSourceThisDirection, 0.25);
-		
-		if(moveSourceThisDirection.getX() > moveSourceThisDirection.getZ()){ 
-			if((!(moveSourceThisDirection.getX() == 1) && !(moveSourceThisDirection.getZ() == -1)))
-				moveSourceThisDirection.setZ(0);
+
+		if(Math.abs(moveSourceThisDirection.getX()) > Math.abs(moveSourceThisDirection.getZ())){
+			moveSourceThisDirection.setZ(0);
 		}
-		else{ 
-			if((!(moveSourceThisDirection.getX() == -1) && !(moveSourceThisDirection.getZ() == 1)))
-				moveSourceThisDirection.setX(0);
+		else{
+			moveSourceThisDirection.setX(0);
 		}
 
 		location = (sblock.getLocation().add(moveSourceThisDirection));
 	}
+}
 
 		if (shouldAddCooldown) {
 			this.bPlayer.addCooldown("RaiseEarthWall", this.cooldown);

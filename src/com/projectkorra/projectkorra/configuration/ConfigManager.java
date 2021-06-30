@@ -335,7 +335,7 @@ public class ConfigManager {
 			config.addDefault("Abilities.Earth.Collapse.Instructions", "Left click an earthbendable block. If there's space under that block, it will be collapsed. Alternatively, you can tap sneak to collapse multiple blocks at a time.");
 			config.addDefault("Abilities.Earth.Collapse.DeathMessage", "{victim} was suffocated by {attacker}'s {ability}");
 			config.addDefault("Abilities.Earth.LowerEarth.Description", "Using the knowledge of collapse, you can collapse, like tapping shift, but with right RaiseEarth, scales off of Collapse's stats");
-			config.addDefault("Abilities.Earth.LowerEarth.Description", "RaiseEarth (Right Click) > RaiseEarth (Right Click)");
+			config.addDefault("Abilities.Earth.LowerEarth.Instructions", "\n" + "RaiseEarth (Right Click) > RaiseEarth (Right Click)");
 			config.addDefault("Abilities.Earth.EarthArmor.Description", "This ability encases the Earthbender in armor, giving them protection. It is a fundamental earthbending technique that's used to survive longer in battles.");
 			config.addDefault("Abilities.Earth.EarthArmor.Instructions", "Tap sneak while looking at an earthbendable block to bring those blocks towards you, forming earth armor. This ability will give you extra hearts and will be removed once those extra hearts are gone. You can disable this ability by holding sneak and left clicking with EarthArmor.");
 			config.addDefault("Abilities.Earth.EarthBlast.Description", "EarthBlast is a basic yet fundamental earthbending ability. It allows you to deal rapid fire damage to your target to finish low health targets off or deal burst damage to them. Although it can be used at long range, it's potential is greater in close ranged comat.");
