@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.projectkorra.projectkorra.ability.CoreAbility;
-import com.projectkorra.projectkorra.ability.EarthAbility;
 import com.projectkorra.projectkorra.ability.FireAbility;
 import com.projectkorra.projectkorra.firebending.FireJet;
 import org.bukkit.Location;
@@ -241,8 +240,10 @@ public class Lightning extends LightningAbility {
 				final Location localLocation2 = new Location(this.player.getWorld(), d7, newY, d8);
 				playLightningbendingParticle(localLocation2);
 				this.particleRotation += 1.0D / d3;
-				if(random.nextDouble() < .2)
-				player.getLocation().getWorld().playSound(player.getLocation(), Sound.BLOCK_BEEHIVE_WORK, (float)2, (float).5);
+
+				if(random.nextDouble() < .2){
+					player.getLocation().getWorld().playSound(player.getLocation(), Sound.BLOCK_BEEHIVE_WORK, (float)2, (float).5);
+				}
 
 			}
 
@@ -538,11 +539,9 @@ public class Lightning extends LightningAbility {
 						Lightning.this.arcs.add(newArc);
 					}
 				}
-				if(FireAbility.isEarth(block)){
-					block.getLocation().getWorld().playSound(block.getLocation(), Sound.ENTITY_GENERIC_EXPLODE,(float)1, (float)1);
-				}
+				
 
-				for (final Entity entity : GeneralMethods.getEntitiesAroundPoint(this.location, 1.5)) {
+				for (final Entity entity : GeneralMethods.getEntitiesAroundPoint(this.location, 2.5)) {
 
 					// If the player is in water we will electrocute them only if they are standing in water. If the lightning hit ice we can electrocute them all the time.
 					if (entity.equals(Lightning.this.player) && !(this.selfHitWater && Lightning.this.hitWater && isWater(Lightning.this.player.getLocation().getBlock())) && !(this.selfHitWater && Lightning.this.hitIce)) {
