@@ -616,8 +616,8 @@ public class ConfigManager {
 			config.addDefault("Properties.Water.IceSound.Volume", 1);
 			config.addDefault("Properties.Water.IceSound.Pitch", 1);
 			config.addDefault("Properties.Water.PlantSound.Sound", "BLOCK_GRASS_STEP");
-			config.addDefault("Properties.Water.IceSound.Volume", 1);
-			config.addDefault("Properties.Water.IceSound.Pitch", 1);
+			config.addDefault("Properties.Water.PlantSound.Volume", 1);
+			config.addDefault("Properties.Water.PlantSound.Pitch", 1);
 
 			config.addDefault("Properties.Earth.DynamicSourcing", true);
 			config.addDefault("Properties.Earth.RevertEarthbending", true);
@@ -1348,6 +1348,7 @@ public class ConfigManager {
 			config.addDefault("Abilities.Earth.Tremorsense.MaxDepth", 10);
 			config.addDefault("Abilities.Earth.Tremorsense.Radius", 5);
 			config.addDefault("Abilities.Earth.Tremorsense.LightThreshold", 7);
+			config.addDefault("Abilities.Earth.Tremorsense.ClickRequiresDarkness", false);
 			config.addDefault("Abilities.Earth.Tremorsense.Cooldown", 1000);
 			config.addDefault("Abilities.Earth.Tremorsense.StickyRange", 3);
 
