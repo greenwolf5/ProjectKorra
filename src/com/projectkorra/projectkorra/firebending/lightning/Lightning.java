@@ -142,8 +142,10 @@ public class Lightning extends LightningAbility {
 	 * @param lent The LivingEntity that is being damaged
 	 */
 	public void electrocute(final LivingEntity lent) {
-		//playLightningbendingSound(lent.getLocation());
-		//playLightningbendingSound(this.player.getLocation());
+		playLightningbendingSound(lent.getLocation());
+		playLightningbendingSound(this.player.getLocation());
+		playLightningbendingHitSound(lent.getLocation());
+		playLightningbendingHitSound(this.player.getLocation());
 		DamageHandler.damageEntity(lent, this.damage, this);
 
 		if (Math.random() <= this.stunChance) {
@@ -209,6 +211,11 @@ public class Lightning extends LightningAbility {
 					final Location loc = this.player.getEyeLocation().add(this.player.getEyeLocation().getDirection().normalize().multiply(1.2));
 					loc.add(0, 0.3, 0);
 					playLightningbendingParticle(loc, 0.2F, 0.2F, 0.2F);
+					if(random.nextDouble() < .2){
+						//In the random if statement to not spam it.
+						playLightningBendingChargingSound(loc);
+					}
+					
 				} else {
 					this.state = State.MAINBOLT;
 					this.bPlayer.addCooldown(this);
@@ -240,11 +247,10 @@ public class Lightning extends LightningAbility {
 				final Location localLocation2 = new Location(this.player.getWorld(), d7, newY, d8);
 				playLightningbendingParticle(localLocation2);
 				this.particleRotation += 1.0D / d3;
-
 				if(random.nextDouble() < .2){
-					player.getLocation().getWorld().playSound(player.getLocation(), Sound.BLOCK_BEEHIVE_WORK, (float)2, (float).5);
+					//In the random if statement to not spam it.
+					playLightningBendingChargingSound(this.player.getLocation());
 				}
-
 			}
 
 		} else if (this.state == State.MAINBOLT) {
@@ -507,8 +513,8 @@ public class Lightning extends LightningAbility {
 		@Override
 		public void run() {
 			playLightningbendingParticle(this.location, 0F, 0F, 0F);
-			if(random.nextDouble() < .01){
-				location.getWorld().playSound(location, Sound.ENTITY_CREEPER_PRIMED, (float)1, (float)0);
+			if(random.nextDouble() < .05){
+				playLightningbendingSound(this.location);
 			}
 			this.count++;
 			if (this.count > 5) {
@@ -554,7 +560,6 @@ public class Lightning extends LightningAbility {
 						if (lent instanceof Player) {
 							playLightningbendingSound(lent.getLocation());
 							playLightningbendingSound(Lightning.this.player.getLocation());
-							player.getLocation().getWorld().playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, (float)1, (float)2);
 							final Player p = (Player) lent;
 							final Lightning light = getAbility(p, Lightning.class);
 							if (light != null && light.state == State.START) {
