@@ -2,10 +2,14 @@ package com.projectkorra.projectkorra.firebending.lightning;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.projectkorra.projectkorra.ability.CoreAbility;
+import com.projectkorra.projectkorra.ability.EarthAbility;
+import com.projectkorra.projectkorra.ability.FireAbility;
 import com.projectkorra.projectkorra.firebending.FireJet;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -73,6 +77,8 @@ public class Lightning extends LightningAbility {
 	private ArrayList<BukkitRunnable> tasks;
 	private ArrayList<Location> locations;
 
+	private Random random;
+
 	public Lightning(final Player player) {
 		super(player);
 
@@ -84,7 +90,7 @@ public class Lightning extends LightningAbility {
 				return;
 			}
 		}
-
+		this.random = new Random();
 		this.charged = false;
 		this.hitWater = false;
 		this.hitIce = false;
@@ -137,8 +143,8 @@ public class Lightning extends LightningAbility {
 	 * @param lent The LivingEntity that is being damaged
 	 */
 	public void electrocute(final LivingEntity lent) {
-		playLightningbendingSound(lent.getLocation());
-		playLightningbendingSound(this.player.getLocation());
+		//playLightningbendingSound(lent.getLocation());
+		//playLightningbendingSound(this.player.getLocation());
 		DamageHandler.damageEntity(lent, this.damage, this);
 
 		if (Math.random() <= this.stunChance) {
@@ -235,6 +241,9 @@ public class Lightning extends LightningAbility {
 				final Location localLocation2 = new Location(this.player.getWorld(), d7, newY, d8);
 				playLightningbendingParticle(localLocation2);
 				this.particleRotation += 1.0D / d3;
+				if(random.nextDouble() < .2)
+				player.getLocation().getWorld().playSound(player.getLocation(), Sound.BLOCK_BEEHIVE_WORK, (float)2, (float).5);
+
 			}
 
 		} else if (this.state == State.MAINBOLT) {
@@ -367,9 +376,9 @@ public class Lightning extends LightningAbility {
 			for (int i = 0; i < this.animationLocations.size(); i++) {
 				if (Math.random() < chance) {
 					final Location loc = this.animationLocations.get(i).getLocation();
-					final double angle = (Math.random() - 0.5) * maxArcAngle * 2;
+					final double angle = 1 /**(Math.random() - 0.5) */ * maxArcAngle * 2;
 					final Vector dir = GeneralMethods.rotateXZ(this.direction.clone(), angle);
-					final double randRange = (Math.random() * range) + (range / 3.0);
+					final double randRange = 1/**(Math.random() * range) */ + (range / 3.0);
 
 					final Location loc2 = loc.clone().add(dir.normalize().multiply(randRange));
 					final Arc arc = new Arc(loc, loc2);
@@ -379,6 +388,7 @@ public class Lightning extends LightningAbility {
 					arc.generatePoints(POINT_GENERATION);
 					arcs.add(arc);
 					arcs.addAll(arc.generateArcs(chance / 2.0, range / 2.0, maxArcAngle));
+					//todo: try sound here
 				}
 			}
 			return arcs;
@@ -405,7 +415,7 @@ public class Lightning extends LightningAbility {
 						adjac = loc1.distance(loc2) / 2;
 					}
 
-					double angle = (Math.random() - 0.5) * Lightning.this.maxArcAngle;
+					double angle = 1/*(Math.random() - 0.5)*/ * Lightning.this.maxArcAngle;
 
 					angle += angle >= 0 ? 10 : -10;
 
@@ -416,6 +426,7 @@ public class Lightning extends LightningAbility {
 
 					newLoc.add(0, (Math.random() - 0.5) / 2.0, 0);
 					this.points.add(j + 1, newLoc);
+
 				}
 			}
 			for (int i = 0; i < this.points.size(); i++) {
@@ -495,6 +506,9 @@ public class Lightning extends LightningAbility {
 		@Override
 		public void run() {
 			playLightningbendingParticle(this.location, 0F, 0F, 0F);
+			if(random.nextDouble() < .01){
+				location.getWorld().playSound(location, Sound.ENTITY_CREEPER_PRIMED, (float)1, (float)0);
+			}
 			this.count++;
 			if (this.count > 5) {
 				this.cancel();
@@ -524,8 +538,11 @@ public class Lightning extends LightningAbility {
 						Lightning.this.arcs.add(newArc);
 					}
 				}
+				if(FireAbility.isEarth(block)){
+					block.getLocation().getWorld().playSound(block.getLocation(), Sound.ENTITY_GENERIC_EXPLODE,(float)1, (float)1);
+				}
 
-				for (final Entity entity : GeneralMethods.getEntitiesAroundPoint(this.location, 2.5)) {
+				for (final Entity entity : GeneralMethods.getEntitiesAroundPoint(this.location, 1.5)) {
 
 					// If the player is in water we will electrocute them only if they are standing in water. If the lightning hit ice we can electrocute them all the time.
 					if (entity.equals(Lightning.this.player) && !(this.selfHitWater && Lightning.this.hitWater && isWater(Lightning.this.player.getLocation().getBlock())) && !(this.selfHitWater && Lightning.this.hitIce)) {
@@ -538,6 +555,7 @@ public class Lightning extends LightningAbility {
 						if (lent instanceof Player) {
 							playLightningbendingSound(lent.getLocation());
 							playLightningbendingSound(Lightning.this.player.getLocation());
+							player.getLocation().getWorld().playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, (float)1, (float)2);
 							final Player p = (Player) lent;
 							final Lightning light = getAbility(p, Lightning.class);
 							if (light != null && light.state == State.START) {
