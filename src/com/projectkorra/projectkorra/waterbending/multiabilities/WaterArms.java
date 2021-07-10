@@ -233,10 +233,10 @@ public class WaterArms extends WaterAbility {
 			return false;
 		}
 
-		if (!(this.getRightHandPos().getBlock().getLocation().equals(r1.getBlock().getLocation()))) {
+		/*if (!(this.getRightHandPos().getBlock().getLocation().equals(r1.getBlock().getLocation()))) {
 			this.addBlock(r1.getBlock(), GeneralMethods.getWaterData(3), 100);
 			newBlocks.add(r1.getBlock());
-		}
+		}*/
 
 		final Location r2 = GeneralMethods.getRightSide(this.player.getLocation(), 2).add(0, 1.5, 0);
 		if (!this.canPlaceBlock(r2.getBlock()) || !this.canPlaceBlock(r1.getBlock())) {
@@ -288,10 +288,10 @@ public class WaterArms extends WaterAbility {
 			return false;
 		}
 
-		if (!(this.getLeftHandPos().getBlock().getLocation().equals(l1.getBlock().getLocation()))) {
+		/*if (!(this.getLeftHandPos().getBlock().getLocation().equals(l1.getBlock().getLocation()))) {
 			this.addBlock(l1.getBlock(), GeneralMethods.getWaterData(3), 100);
 			newBlocks.add(l1.getBlock());
-		}
+		}*/
 
 		final Location l2 = GeneralMethods.getLeftSide(this.player.getLocation(), 2).add(0, 1.5, 0);
 		if (!this.canPlaceBlock(l2.getBlock()) || !this.canPlaceBlock(l1.getBlock())) {
