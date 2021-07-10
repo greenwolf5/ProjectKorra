@@ -1126,7 +1126,7 @@ public class PKListener implements Listener {
 		}
 
 		if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
-			if (bPlayer.getBoundAbilityName().equalsIgnoreCase("IceBlast")) {
+			if (bPlayer.getBoundAbilityName().equalsIgnoreCase("IceSpike")) {
 				if (CoreAbility.hasAbility(player, IceBullet.class)) {
 					CoreAbility.getAbility(player, IceBullet.class).doRightClick();
 				}
@@ -1718,13 +1718,13 @@ public class PKListener implements Listener {
 					if (abil.equalsIgnoreCase("Bloodbending")) {
 						Bloodbending.launch(player);
 					} else if (abil.equalsIgnoreCase("IceBlast")) {
+						IceBlast.activate(player);
+					} else if (abil.equalsIgnoreCase("IceSpike")) {
 						if (CoreAbility.hasAbility(player, IceBullet.class)) {
 							CoreAbility.getAbility(player, IceBullet.class).doLeftClick();
 						} else {
-							IceBlast.activate(player);
+							IceSpikeBlast.activate(player);
 						}
-					} else if (abil.equalsIgnoreCase("IceSpike")) {
-						IceSpikeBlast.activate(player);
 					} else if (abil.equalsIgnoreCase("OctopusForm")) {
 						new OctopusForm(player);
 					} else if (abil.equalsIgnoreCase("PhaseChange")) {

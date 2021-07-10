@@ -350,9 +350,9 @@ public class IceBullet extends IceAbility implements ComboAbility {
 	@Override
 	public ArrayList<AbilityInformation> getCombination() {
 		final ArrayList<AbilityInformation> iceBullet = new ArrayList<>();
-		iceBullet.add(new AbilityInformation("WaterBubble", ClickType.SHIFT_DOWN));
-		iceBullet.add(new AbilityInformation("WaterBubble", ClickType.SHIFT_UP));
-		iceBullet.add(new AbilityInformation("IceBlast", ClickType.SHIFT_DOWN));
+		iceBullet.add(new AbilityInformation("Surge", ClickType.SHIFT_DOWN));
+		iceBullet.add(new AbilityInformation("Surge", ClickType.SHIFT_UP));
+		iceBullet.add(new AbilityInformation("IceSpike", ClickType.SHIFT_DOWN));
 		return iceBullet;
 	}
 

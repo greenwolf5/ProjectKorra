@@ -198,6 +198,7 @@ public class WaterArms extends WaterAbility {
 		this.selectedSlot = this.player.getInventory().getHeldItemSlot();
 		this.displayRightArm();
 		this.displayLeftArm();
+		this.player.setFallDistance(0);
 
 		if (this.lightningEnabled) {
 			this.checkIfZapped();
