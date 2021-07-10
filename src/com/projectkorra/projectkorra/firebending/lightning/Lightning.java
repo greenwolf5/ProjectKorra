@@ -2,6 +2,7 @@ package com.projectkorra.projectkorra.firebending.lightning;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.firebending.FireJet;
@@ -128,6 +129,7 @@ public class Lightning extends LightningAbility {
 			this.cooldown = getConfig().getLong("Abilities.Avatar.AvatarState.Fire.Lightning.Cooldown");
 			this.damage = getConfig().getDouble("Abilities.Avatar.AvatarState.Fire.Lightning.Damage");
 		}
+
 		this.start();
 	}
 
@@ -139,8 +141,9 @@ public class Lightning extends LightningAbility {
 	public void electrocute(final LivingEntity lent) {
 		playLightningbendingSound(lent.getLocation());
 		playLightningbendingSound(this.player.getLocation());
+		playLightningbendingHitSound(lent.getLocation());
+		playLightningbendingHitSound(this.player.getLocation());
 		DamageHandler.damageEntity(lent, this.damage, this);
-
 		if (Math.random() <= this.stunChance) {
 			final MovementHandler mh = new MovementHandler(lent, this);
 			mh.stopWithDuration((long) this.stunDuration, Element.LIGHTNING.getColor() + "* Electrocuted *");
@@ -204,6 +207,10 @@ public class Lightning extends LightningAbility {
 					final Location loc = this.player.getEyeLocation().add(this.player.getEyeLocation().getDirection().normalize().multiply(1.2));
 					loc.add(0, 0.3, 0);
 					playLightningbendingParticle(loc, 0.2F, 0.2F, 0.2F);
+					if(ThreadLocalRandom.current().nextDouble() < .2){
+						playLightningbendingChargingSound(loc);
+					}
+					
 				} else {
 					this.state = State.MAINBOLT;
 					this.bPlayer.addCooldown(this);
@@ -235,6 +242,9 @@ public class Lightning extends LightningAbility {
 				final Location localLocation2 = new Location(this.player.getWorld(), d7, newY, d8);
 				playLightningbendingParticle(localLocation2);
 				this.particleRotation += 1.0D / d3;
+				if(ThreadLocalRandom.current().nextDouble() < .2){
+					playLightningbendingChargingSound(this.player.getLocation());
+				}
 			}
 
 		} else if (this.state == State.MAINBOLT) {
@@ -499,6 +509,10 @@ public class Lightning extends LightningAbility {
 			if (this.count > 5) {
 				this.cancel();
 			} else if (this.count == 1) {
+				if(ThreadLocalRandom.current().nextDouble() < .1){
+					playLightningbendingSound(location);
+				}
+
 				if (!Lightning.this.isTransparentForLightning(Lightning.this.player, this.location.getBlock())) {
 					this.arc.cancel();
 					return;
