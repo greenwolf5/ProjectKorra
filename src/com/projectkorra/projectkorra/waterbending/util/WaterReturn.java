@@ -15,6 +15,7 @@ import org.bukkit.util.Vector;
 
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.WaterAbility;
+import com.projectkorra.projectkorra.configuration.ConfigManager;
 import com.projectkorra.projectkorra.util.ParticleEffect;
 import com.projectkorra.projectkorra.util.TempBlock;
 import com.projectkorra.projectkorra.waterbending.OctopusForm;
@@ -29,6 +30,7 @@ public class WaterReturn extends WaterAbility {
 	private double range;
 	private Location location;
 	private TempBlock block;
+	private double absorbRange;
 
 	public WaterReturn(final Player player, final Block block) {
 		super(player);
@@ -39,6 +41,7 @@ public class WaterReturn extends WaterAbility {
 		this.location = block.getLocation();
 		this.range = 30;
 		this.interval = 50;
+		this.absorbRange = ConfigManager.getConfig().getDouble("Abilities.Water.Passive.BottleBending.WaterAbsorb");
 
 		this.range = this.getNightFactor(this.range);
 
@@ -76,7 +79,7 @@ public class WaterReturn extends WaterAbility {
 		if (this.location.distanceSquared(this.player.getEyeLocation()) > this.range * this.range) {
 			this.remove();
 			return;
-		} else if (this.location.distanceSquared(this.player.getEyeLocation()) <= 1.5 * 1.5) {
+		} else if (this.location.distanceSquared(this.player.getEyeLocation()) <= absorbRange * absorbRange) {
 			this.fillBottle();
 			return;
 		}

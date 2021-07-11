@@ -967,6 +967,8 @@ public class ConfigManager {
 			config.addDefault("Abilities.Water.Passive.FastSwim.SpeedFactor", 0.7);
 			config.addDefault("Abilities.Water.Passive.FastSwim.AllowWaterArms", false);
 			config.addDefault("Abilities.Water.Passive.Hydrosink.Enabled", true);
+			config.addDefault("Abilities.Water.Passive.BottleBending.WaterAbsorb", 25);
+
 
 			config.addDefault("Abilities.Water.Bloodbending.Enabled", true);
 			config.addDefault("Abilities.Water.Bloodbending.CanOnlyBeUsedAtNight", true);
